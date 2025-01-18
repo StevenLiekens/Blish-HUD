@@ -144,8 +144,12 @@ namespace Blish_HUD.Controls {
 
         /// <inheritdoc />
         protected override void OnClick(MouseEventArgs e) {
-            if (_canCollapse && _layoutHeaderBounds.Contains(this.RelativeMousePosition)) {
-                this.ToggleAccordionState();
+            if (!string.IsNullOrEmpty(_title) && _layoutHeaderBounds.Contains(this.RelativeMousePosition)) {
+                if (_canCollapse) {
+                    this.ToggleAccordionState();
+                }
+
+                e.StopPropagation();
             }
 
             base.OnClick(e);
