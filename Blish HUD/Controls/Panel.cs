@@ -5,6 +5,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Newtonsoft.Json;
 using System;
 using System.ComponentModel;
+using Microsoft.Xna.Framework.Input;
 
 namespace Blish_HUD.Controls {
 
@@ -144,15 +145,20 @@ namespace Blish_HUD.Controls {
 
         /// <inheritdoc />
         protected override void OnClick(MouseEventArgs e) {
-            if (!string.IsNullOrEmpty(_title) && _layoutHeaderBounds.Contains(this.RelativeMousePosition)) {
-                if (_canCollapse) {
-                    this.ToggleAccordionState();
-                }
-
-                e.StopPropagation();
+            if (_canCollapse && _layoutHeaderBounds.Contains(this.RelativeMousePosition)) {
+                this.ToggleAccordionState();
             }
 
             base.OnClick(e);
+        }
+
+        /// <inheritdoc />
+        public override Control TriggerMouseInput(MouseEventArgs args, MouseState ms) {
+            if (!string.IsNullOrEmpty(_title) && _layoutHeaderBounds.Contains(this.RelativeMousePosition)) {
+                args.StopPropagation();
+            }
+
+            return base.TriggerMouseInput(args, ms);
         }
 
         protected override void OnChildAdded(ChildChangedEventArgs e) {
